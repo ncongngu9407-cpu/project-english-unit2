@@ -1,0 +1,1896 @@
+/* ============================================================================
+   GREEN NEBULA THEME — Bioluminescent Emerald & Deep Forest Nebula
+   Hotfix V5 Applied:
+   1. 3 Diagonal Large Hanging Cards on Slides 2, 4, 8, 9 (width: 24vw, height: 25vh,
+      aspect-ratio: 16/10, placed at top: 6vh/right: 24vw, top: 34vh/right: 14vw,
+      top: 62vh/right: 4vw with twin glowing cords)
+   2. 2X TV Classroom Readability Typography (width: 54vw left text region,
+      Header/Sublabel 1.8rem-2.2rem, Title clamp(4.8rem, 6.5vw, 7.5rem),
+      Card text clamp(1.75rem, 2.3vw, 2.6rem), 2-Column Grid for 5-6 item slides)
+   3. Photorealistic 3D Blender Leaf with Direct Launch & Freeze-Frame Stop on Slide 10
+   ============================================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: radial-gradient(
+    circle at 65% 50%,
+    #0a3d28 0%,
+    #062317 38%,
+    #020b07 100%
+  );
+  color: #f0fdf4;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* WebGL Canvas Layer */
+#webgl-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  will-change: filter;
+}
+
+/* 3D Perspective Container (Normal Slide Content: z-index 25) */
+#css3d-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 25;
+  perspective: 1300px;
+  perspective-origin: 50% 50%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.css3d-camera-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.slide-stage-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+}
+
+/* ============================================================================
+   VOLUMETRIC FOG SURGE OVERLAY (Slide 3 -> 4 Dive & Slide 7 -> 8 Fog Curtain)
+   ============================================================================ */
+.fog-transition-overlay {
+  position: fixed;
+  inset: -15%;
+  width: 130vw;
+  height: 130vh;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 30% 45%, rgba(52, 211, 153, 0.65) 0%, transparent 52%),
+    radial-gradient(circle at 70% 55%, rgba(16, 185, 129, 0.65) 0%, transparent 52%),
+    radial-gradient(circle at 50% 50%, rgba(6, 48, 30, 0.98) 0%, rgba(2, 11, 7, 0.99) 100%);
+  filter: blur(16px);
+  will-change: opacity, transform;
+}
+
+/* ============================================================================
+   HOTFIX V6 SECTION 1: REDUCE TEXT 25% & LEFT TEXT REGION 46VW
+   - Header & Sub-label: 1.2rem - 1.4rem (clamp(1.2rem, 1.35vw, 1.4rem)), font-weight: 700
+   - Primary & Accent Title: clamp(3.2rem, 4.4vw, 5.0rem), margin-bottom: 14px
+   - Card / Bullet text: clamp(1.25rem, 1.55vw, 1.75rem), line-height: 1.35, #F0FDF4
+   - Left Text Region: width: 46vw, padding: 10px 16px, margin-bottom: 10px
+   ============================================================================ */
+
+.slide-header {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.2rem, 1.35vw, 1.4rem);
+  font-weight: 700;
+  line-height: 1.18;
+  color: #f0fdf4;
+  margin-bottom: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.28em;
+  text-shadow: 0 0 20px rgba(52, 211, 153, 0.35), 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+.slide-sublabel {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(1.2rem, 1.3vw, 1.4rem);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #34d399;
+  margin-bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+  text-shadow: 0 0 16px rgba(52, 211, 153, 0.45);
+}
+
+.slide-titles-wrap {
+  margin-bottom: 14px;
+  transform-style: preserve-3d;
+}
+
+.slide-title-line1,
+.slide-title-line2 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(3.2rem, 4.4vw, 5.0rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2em;
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.75);
+}
+
+.slide-title-line1 {
+  color: #f0fdf4;
+}
+
+.slide-title-line2 {
+  color: #6ee7b7;
+}
+
+.slide-title-line2 .word-pop {
+  background: linear-gradient(135deg, #a7f3d0 0%, #34d399 55%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 8px 26px rgba(0, 0, 0, 0.75))
+          drop-shadow(0 0 18px rgba(52, 211, 153, 0.28));
+}
+
+.slide-content-block {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.25rem, 1.55vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: #f0fdf4;
+  display: flex;
+  flex-direction: column;
+  transform-style: preserve-3d;
+}
+
+.bullet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 10px;
+  transform-style: preserve-3d;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
+}
+
+.bullet-marker {
+  color: #34d399;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+  text-shadow: 0 0 12px rgba(52, 211, 153, 0.8);
+}
+
+.bullet-text {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.28em;
+  row-gap: 2px;
+  color: #f0fdf4;
+  font-size: clamp(1.25rem, 1.55vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.35;
+  transform-style: preserve-3d;
+}
+
+.word-pop {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+/* ============================================================================
+   IMAGE INTEGRITY RULES
+   ============================================================================ */
+.full-personal-photo {
+  width: 100%;
+  height: 109%;
+  object-fit: contain;
+  object-position: top center;
+  background: rgba(2, 11, 7, 0.85);
+  display: block;
+}
+
+.wide-personal-photo {
+  width: 100%;
+  height: 112%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+
+.full-thematic-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+/* ============================================================================
+   LEFT TEXT REGION (Width: 46vw per Hotfix V6 Section 1, >=10vh above bottom)
+   ============================================================================ */
+.layout-pair1-classic .slide-text-region,
+.layout-pair4-synthesis .slide-text-region,
+.layout-pair4-conclusion .slide-text-region,
+.layout-pair3-tilted-showcase .slide-text-region {
+  position: absolute;
+  left: 3.5vw;
+  top: 4.5vh;
+  width: 46vw;
+  max-height: 82vh;
+  transform: rotateY(7deg) rotateX(1.5deg);
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  z-index: 3;
+}
+
+.layout-pair1-classic .visual-region-right {
+  position: absolute;
+  right: 4vw;
+  top: 6vh;
+  width: 41vw;
+  height: 80vh;
+  max-height: 80vh;
+  transform-style: preserve-3d;
+  z-index: 2;
+}
+
+/* Slide 2: Horizontal Glass Strips (padding: 10px 16px, margin-bottom: 10px) */
+.horizontal-glass-strip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+  margin-left: var(--step-offset, 0px);
+  padding: 10px 16px;
+  background: linear-gradient(
+    90deg,
+    rgba(10, 61, 40, 0.82) 0%,
+    rgba(6, 35, 23, 0.62) 100%
+  );
+  border: 1px solid rgba(52, 211, 153, 0.36);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55),
+              inset 0 0 16px rgba(16, 185, 129, 0.14);
+  transform-style: preserve-3d;
+}
+
+.glass-strip-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  border-radius: 12px 0 0 12px;
+  background: #10b981;
+  box-shadow: 0 0 14px #10b981, 0 0 24px #34d399;
+}
+
+.glass-strip-icon {
+  color: #6ee7b7;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+  text-shadow: 0 0 10px #34d399;
+}
+
+/* ============================================================================
+   HOTFIX V6 - REQUIREMENT 2: FORCE 2X HANGING IMAGE SIZE (!important)
+   (Slides 2, 4, 8, 9)
+   - Forced 2X Horizontal Card:
+     + width: 22vw !important; min-width: 320px !important;
+     + height: 25vh !important; min-height: 220px !important;
+   - Image inside occupies 84% of card height:
+     + width: 100% !important; height: 84% !important; object-fit: cover;
+   - Single-line slim bottom caption bar (0.85rem, white-space: nowrap)
+   - Diagonal Cascade across right half of screen:
+     + Card 1 (Top-Left):     top: 5vh,  right: 24vw, rotateZ(-4deg)
+     + Card 2 (Middle):       top: 33vh, right: 13vw, rotateZ(2deg)
+     + Card 3 (Bottom-Right): top: 61vh, right: 2vw,  rotateZ(-3deg)
+   ============================================================================ */
+.visual-region-diagonal-chain {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  z-index: 2;
+}
+
+.diagonal-chain-item {
+  position: absolute !important;
+  width: fit-content !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  flex: none !important;
+  margin: 0 !important;
+  display: block !important;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.diagonal-chain-swinger {
+  position: relative !important;
+  width: 100% !important;
+  height: auto !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  transform-origin: 50% -40px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Twin glowing suspension cords extending straight up to top of viewport */
+.chain-rope {
+  position: absolute;
+  bottom: 100%;
+  width: 2px;
+  height: 75vh;
+  background: linear-gradient(
+    180deg,
+    rgba(52, 211, 153, 0.12) 0%,
+    #10b981 55%,
+    #6ee7b7 100%
+  );
+  box-shadow: 0 0 8px #34d399, 0 0 18px rgba(16, 185, 129, 0.8);
+  pointer-events: none;
+}
+
+.chain-rope-left {
+  left: 20%;
+}
+
+.chain-rope-right {
+  right: 20%;
+}
+
+.chain-knot {
+  position: absolute;
+  top: -5px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #6ee7b7;
+  box-shadow: 0 0 12px #34d399, 0 0 22px #10b981;
+  z-index: 4;
+}
+
+.chain-knot-left {
+  left: calc(20% - 4.5px);
+}
+
+.chain-knot-right {
+  right: calc(20% - 4.5px);
+}
+
+.diagonal-chain-card {
+  position: relative !important;
+  width: 100% !important;
+  height: auto !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: linear-gradient(
+    135deg,
+    rgba(6, 35, 23, 0.96) 0%,
+    rgba(2, 11, 7, 0.98) 100%
+  );
+  border: 2px solid #34d399;
+  border-radius: 14px;
+  padding: 4px;
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.84),
+    0 0 26px rgba(52, 211, 153, 0.4),
+    inset 0 0 16px rgba(16, 185, 129, 0.18);
+  overflow: hidden !important;
+}
+
+.diagonal-chain-img-viewport {
+  position: relative;
+  width: 100%;
+  height: auto;
+  border-radius: 9px 9px 0 0;
+  overflow: hidden !important;
+  background: #020b07;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diagonal-chain-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  display: block !important;
+  background: #020b07;
+}
+
+/* Bottom caption bar for Diagonal Hanging Cards — wraps cleanly if needed so captions are never cut off */
+.diagonal-chain-bottom-bar {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 30px !important;
+  max-height: none !important;
+  padding: 5px 10px !important;
+  background: rgba(2, 11, 7, 0.92);
+  border-top: 1px solid rgba(52, 211, 153, 0.4);
+  border-radius: 0 0 9px 9px;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 4px 6px;
+  white-space: normal !important;
+  overflow: visible !important;
+  z-index: 3;
+}
+
+.diagonal-chain-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem !important;
+  font-weight: 700;
+  color: #34d399;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  white-space: nowrap !important;
+}
+
+.diagonal-chain-sep {
+  color: rgba(110, 231, 183, 0.55);
+  font-size: 0.78rem;
+  flex-shrink: 0;
+}
+
+.diagonal-chain-caption {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.84rem !important;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #f0fdf4;
+  white-space: normal !important;
+  overflow: visible !important;
+  word-break: break-word;
+}
+
+/* ============================================================================
+   PORTRAIT / SQUARE SHRINK-TO-FIT FRAME HUGGING (Slides 2, 4, 8, 9)
+   ============================================================================ */
+.diagonal-chain-item.is-portrait-hug {
+  width: fit-content !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+.diagonal-chain-item.is-portrait-hug .diagonal-chain-swinger {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.diagonal-chain-item.is-portrait-hug .chain-rope-left {
+  left: 16px !important;
+}
+
+.diagonal-chain-item.is-portrait-hug .chain-rope-right {
+  right: 16px !important;
+}
+
+.diagonal-chain-item.is-portrait-hug .chain-knot-left {
+  left: 11.5px !important;
+}
+
+.diagonal-chain-item.is-portrait-hug .chain-knot-right {
+  right: 11.5px !important;
+}
+
+.diagonal-chain-item.is-portrait-hug .diagonal-chain-bottom-bar {
+  height: auto !important;
+  min-height: 34px !important;
+  max-height: none !important;
+  padding: 5px 8px !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  white-space: normal !important;
+}
+
+.diagonal-chain-item.is-portrait-hug .diagonal-chain-sep {
+  display: none !important;
+}
+
+.diagonal-chain-item.is-portrait-hug .diagonal-chain-tag {
+  font-size: 0.72rem !important;
+  line-height: 1.1 !important;
+}
+
+.diagonal-chain-item.is-portrait-hug .diagonal-chain-caption {
+  font-size: 0.78rem !important;
+  line-height: 1.2 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  word-break: break-word;
+}
+
+/* ============================================================================
+   PAIR 2: SLIDE 3 & SLIDE 4 (Numbered Pills — 46vw left text region)
+   ============================================================================ */
+.layout-pair2-center-right .slide-text-region {
+  position: absolute;
+  left: 3.5vw;
+  top: 4.5vh;
+  width: 46vw;
+  max-height: 82vh;
+  transform: rotateY(7deg) rotateX(1.5deg);
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  z-index: 3;
+}
+
+.numbered-pills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform-style: preserve-3d;
+}
+
+.numbered-pill-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0;
+  padding: 10px 16px;
+  background: rgba(6, 35, 23, 0.76);
+  border: 1.5px solid rgba(52, 211, 153, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+  transform-style: preserve-3d;
+}
+
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #34d399 0%, #047857 100%);
+  color: #020b07;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(52, 211, 153, 0.75),
+              inset 0 0 6px rgba(255, 255, 255, 0.6);
+}
+
+/* Slide 3 Full-Aspect Non-Cropped Dual Showcase (`slide3-1.jpg` & `slide3-2.jpg`) */
+.visual-region-center-right {
+  position: absolute;
+  left: 51vw;
+  top: 5vh;
+  width: 45vw;
+  height: 84vh;
+  max-height: 84vh;
+  transform-style: preserve-3d;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide3-full-aspect-grid {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  transform-style: preserve-3d;
+}
+
+.full-aspect-card {
+  width: fit-content;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  border: 2px solid #34d399;
+  background: linear-gradient(
+    160deg,
+    rgba(10, 61, 40, 0.85) 0%,
+    rgba(2, 11, 7, 0.96) 100%
+  );
+  padding: 8px;
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.78),
+    0 0 28px rgba(16, 185, 129, 0.35);
+}
+
+.full-aspect-img-wrap {
+  width: 100%;
+  flex: none;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #020b07;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.full-aspect-card .full-thematic-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.with-floor-reflect {
+  -webkit-box-reflect: below 10px
+    linear-gradient(to bottom, transparent 68%, rgba(16, 185, 129, 0.22) 100%);
+}
+
+/* ============================================================================
+   PAIR 3: SLIDE 5 & SLIDE 6 & SLIDE 8 — 2-COLUMN BENTO GRID (padding: 10px 16px, gap: 10px)
+   ============================================================================ */
+.bento-2col-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  transform-style: preserve-3d;
+}
+
+.bento-card-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 16px;
+  margin-bottom: 0;
+  background: linear-gradient(
+    145deg,
+    rgba(10, 61, 40, 0.8) 0%,
+    rgba(4, 24, 16, 0.74) 100%
+  );
+  border: 1.5px solid rgba(52, 211, 153, 0.38);
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55),
+              inset 0 0 18px rgba(16, 185, 129, 0.14);
+  transform-style: preserve-3d;
+}
+
+.bento-card-span2 {
+  grid-column: span 2;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+}
+
+.bento-index {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #34d399;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.65);
+}
+
+.visual-region-tilted-showcase {
+  position: absolute;
+  left: 52vw;
+  right: 3vw;
+  top: 5.5vh;
+  width: 45vw;
+  height: 82vh;
+  max-height: 82vh;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 16px;
+  z-index: 2;
+}
+
+.tilted-3d-showcase {
+  position: relative;
+  width: fit-content;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  border-radius: 16px;
+  border: 2px solid #34d399;
+  box-shadow:
+    0 22px 50px rgba(0, 0, 0, 0.82),
+    0 0 30px rgba(16, 185, 129, 0.4),
+    inset 0 0 20px rgba(52, 211, 153, 0.25);
+  transform-style: preserve-3d;
+  overflow: hidden;
+  background: linear-gradient(
+    145deg,
+    rgba(6, 35, 23, 0.96) 0%,
+    rgba(2, 11, 7, 0.98) 100%
+  );
+}
+
+.tilted-3d-showcase.tilt-slide5 {
+  transform: rotateX(6deg) rotateY(-6deg) rotateZ(1.2deg);
+}
+
+.tilted-3d-showcase.tilt-slide6 {
+  transform: rotateX(6deg) rotateY(5deg) rotateZ(-0.8deg);
+}
+
+.showcase-img-viewport {
+  position: relative;
+  width: 100%;
+  height: auto;
+  border-radius: 11px 11px 0 0;
+  overflow: hidden;
+  background: #020b07;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.showcase-natural-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  display: block;
+}
+
+.diagonal-prism-band {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    125deg,
+    transparent 0%,
+    transparent 38.5%,
+    rgba(110, 231, 183, 0.38) 39.8%,
+    rgba(52, 211, 153, 0.06) 50%,
+    rgba(110, 231, 183, 0.38) 60.2%,
+    transparent 61.5%,
+    transparent 100%
+  );
+  background-size: 280% 280%;
+  animation: diagonalSharpSweep 4.5s linear infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes diagonalSharpSweep {
+  0% {
+    -webkit-mask-position: 100% 100%;
+    mask-position: 100% 100%;
+    background-position: 100% 100%;
+  }
+  100% {
+    -webkit-mask-position: 0% 0%;
+    mask-position: 0% 0%;
+    background-position: 0% 0%;
+  }
+}
+
+.showcase-hud-bar {
+  width: 100%;
+  padding: 7px 12px;
+  background: rgba(2, 11, 7, 0.92);
+  border-top: 1px solid rgba(52, 211, 153, 0.45);
+  border-radius: 0 0 11px 11px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+}
+
+.showcase-hud-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #34d399;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+.showcase-hud-caption {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f0fdf4;
+  line-height: 1.25;
+}
+
+/* ============================================================================
+   HANGING PENDULUM RACK (Slide 6 Top 2 Photos & Slide 7 7 Photos)
+   ============================================================================ */
+.pendulum-gallery-rack {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.pendulum-rack-slide6 {
+  margin-top: 0.5vh;
+  height: auto;
+  justify-content: space-evenly;
+  gap: 28px;
+}
+
+.pendulum-drop-unit {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  margin-top: var(--top-offset, 0px);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.pendulum-card-swinger {
+  position: relative;
+  width: fit-content;
+  max-width: none;
+  transform-origin: 50% -65px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.pendulum-glowing-rope {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 2px;
+  height: calc(var(--rope-len, 90px) + 120px);
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    rgba(52, 211, 153, 0.1) 0%,
+    #10b981 55%,
+    #6ee7b7 100%
+  );
+  box-shadow: 0 0 8px #34d399, 0 0 16px rgba(16, 185, 129, 0.75);
+}
+
+.pendulum-pin-knot {
+  position: absolute;
+  left: 50%;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: #6ee7b7;
+  box-shadow: 0 0 12px #34d399, 0 0 20px #10b981;
+  z-index: 3;
+}
+
+.pendulum-photo-frame {
+  width: fit-content;
+  background: rgba(4, 24, 16, 0.94);
+  border: 1.5px solid #34d399;
+  border-radius: 11px;
+  padding: 4px 4px 6px 4px;
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.78),
+    0 0 18px rgba(52, 211, 153, 0.34);
+  overflow: hidden;
+}
+
+.pendulum-img-crop {
+  width: auto;
+  height: auto;
+  border-radius: 7px;
+  overflow: hidden;
+  background: #020b07;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pendulum-smart-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  display: block;
+}
+
+.pendulum-photo-caption {
+  margin-top: 5px;
+  padding: 0 4px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #a7f3d0;
+  letter-spacing: 0.01em;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* ============================================================================
+   SLIDE 1 HOLOGRAM GLASS POP-UP CARDS
+   ============================================================================ */
+.hologram-showcase-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.hologram-popup-card {
+  position: relative;
+  width: 100%;
+  border-radius: 16px;
+  border: 2px solid #34d399;
+  background: linear-gradient(
+    160deg,
+    rgba(10, 61, 40, 0.78) 0%,
+    rgba(2, 11, 7, 0.92) 100%
+  );
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.76),
+    0 0 26px rgba(16, 185, 129, 0.34),
+    inset 0 0 20px rgba(52, 211, 153, 0.2);
+  padding: 9px;
+  transform-style: preserve-3d;
+}
+
+.hologram-popup-card.holo-card-0 {
+  height: 39vh;
+}
+
+.hologram-popup-card.holo-card-1 {
+  height: 35vh;
+  width: 92%;
+  align-self: flex-end;
+}
+
+.hologram-img-wrap {
+  width: 100%;
+  height: calc(100% - 42px);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hologram-card-footer {
+  height: auto;
+  min-height: 36px;
+  padding: 6px 8px 2px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 10px;
+}
+
+.hologram-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #34d399;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+.hologram-caption {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: #f0fdf4;
+  line-height: 1.25;
+  white-space: normal;
+}
+
+.hologram-scan-beam {
+  position: absolute;
+  left: -3%;
+  right: -3%;
+  top: 100%;
+  height: 22px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(110, 231, 183, 0.9) 50%,
+    transparent 100%
+  );
+  box-shadow: 0 0 24px #34d399, 0 0 40px #10b981;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.corner-spark {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 14px #6ee7b7, 0 0 24px #10b981;
+  pointer-events: none;
+  z-index: 7;
+}
+.spark-tl { top: -4px; left: -4px; }
+.spark-tr { top: -4px; right: -4px; }
+.spark-bl { bottom: -4px; left: -4px; }
+.spark-br { bottom: -4px; right: -4px; }
+
+/* ============================================================================
+   PAIR 4: SLIDE 7, SLIDE 8 & SLIDE 9
+   (Hotfix V7 Req 1: Slide 7 7 hanging photos scaled up 25% with frame hugging)
+   ============================================================================ */
+.layout-pair4-campaign .slide-text-region {
+  position: absolute;
+  left: 3.5vw;
+  right: 3.5vw;
+  top: 3.2vh;
+  width: 93vw;
+  max-height: 87vh;
+  transform: none;
+  z-index: 3;
+}
+
+.layout-pair4-campaign .slide-titles-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-bottom: 31.5vh;
+}
+
+.visual-region-campaign-pendulum {
+  position: absolute;
+  left: 3vw;
+  right: 3vw;
+  top: 19.5vh;
+  width: 94vw;
+  height: 29vh;
+  z-index: 2;
+  transform-style: preserve-3d;
+}
+
+.pendulum-rack-7cols {
+  gap: 8px;
+  justify-content: space-around;
+}
+
+.pendulum-rack-7cols .pendulum-card-swinger {
+  width: fit-content;
+  max-width: none;
+}
+
+.pendulum-rack-7cols .pendulum-img-crop {
+  width: 144px;
+  height: 180px;
+}
+
+.campaign-5col-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  width: 100%;
+  transform-style: preserve-3d;
+}
+
+.campaign-day-col {
+  background: linear-gradient(
+    165deg,
+    rgba(10, 61, 40, 0.88) 0%,
+    rgba(4, 24, 16, 0.82) 100%
+  );
+  border: 1.5px solid #34d399;
+  border-top: 4px solid #10b981;
+  border-radius: 14px;
+  padding: 10px 14px;
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.65),
+    0 0 20px rgba(16, 185, 129, 0.2);
+  transform: rotateY(calc((var(--col-idx, 2) - 2) * -3deg)) translateZ(6px);
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.day-col-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(52, 211, 153, 0.32);
+}
+
+.day-col-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #020b07;
+  background: #34d399;
+  padding: 2px 7px;
+  border-radius: 5px;
+}
+
+.day-col-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.2rem, 1.45vw, 1.55rem);
+  font-weight: 800;
+  color: #6ee7b7;
+}
+
+.day-col-activity {
+  font-size: clamp(1.18rem, 1.4vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.32;
+  color: #f0fdf4;
+}
+
+.campaign-footer {
+  margin-top: 10px;
+  font-size: clamp(1.18rem, 1.4vw, 1.5rem);
+  font-weight: 600;
+  color: #a7f3d0;
+  text-align: center;
+}
+
+.conclusion-card-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 10px;
+  padding: 10px 16px;
+  background: rgba(6, 35, 23, 0.72);
+  border-left: 5px solid #34d399;
+  border-radius: 0 12px 12px 0;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+}
+
+.conclusion-highlight-banner {
+  background: linear-gradient(
+    90deg,
+    rgba(16, 185, 129, 0.38) 0%,
+    rgba(6, 35, 23, 0.82) 100%
+  );
+  border: 1.5px solid #34d399;
+  border-left: 6px solid #6ee7b7;
+  border-radius: 12px;
+}
+
+/* ============================================================================
+   SLIDE 10 (SPECIAL OUTRO) — PHOTOREALISTIC LEAF & "Thanks for Watching!"
+   ============================================================================ */
+.layout-slide10-outro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6vh 4vw 12vh 4vw;
+  transform-style: preserve-3d;
+}
+
+.outro-emerald-aura {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: 540px;
+  height: 540px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(52, 211, 153, 0.24) 0%,
+    rgba(16, 185, 129, 0.1) 45%,
+    transparent 72%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.outro-top-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 3;
+}
+
+.outro-split-headline {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 22vw 1fr;
+  align-items: center;
+  z-index: 3;
+  transform-style: preserve-3d;
+}
+
+.outro-title-left {
+  justify-content: flex-end;
+  text-align: right;
+  padding-right: 1.5vw;
+}
+
+.outro-leaf-center-gap {
+  width: 22vw;
+  height: 30vh;
+}
+
+.outro-title-right {
+  justify-content: flex-start;
+  text-align: left;
+  padding-left: 1.5vw;
+}
+
+.outro-bottom-signature {
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+}
+
+.outro-signature-pill {
+  padding: 10px 28px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(6, 35, 23, 0.9) 0%,
+    rgba(10, 61, 40, 0.94) 50%,
+    rgba(6, 35, 23, 0.9) 100%
+  );
+  border: 2px solid #34d399;
+  box-shadow:
+    0 0 28px rgba(52, 211, 153, 0.42),
+    0 14px 34px rgba(0, 0, 0, 0.75);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.25rem, 1.55vw, 1.75rem);
+  font-weight: 700;
+  color: #f0fdf4;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35em;
+}
+
+/* ============================================================================
+   FOOTER & SPLIT-SCREEN NAVIGATION
+   ============================================================================ */
+.project-badge {
+  position: fixed;
+  right: 4vw;
+  bottom: 2.5vh;
+  z-index: 60;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #f0fdf4;
+  background: rgba(2, 11, 7, 0.82);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  padding: 7px 16px;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+}
+
+.badge-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #4ade80;
+  filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.85));
+  animation: pulseLeaf 3s ease-in-out infinite;
+}
+
+@keyframes pulseLeaf {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 7px rgba(74, 222, 128, 0.75));
+  }
+  50% {
+    transform: scale(1.14);
+    filter: drop-shadow(0 0 15px rgba(110, 231, 183, 1));
+  }
+}
+
+.nav-zone {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 50vw;
+  z-index: 950;
+  cursor: pointer;
+}
+
+.nav-zone-left {
+  left: 0;
+}
+
+.nav-zone-right {
+  left: 50vw;
+}
+
+.nav-indicator {
+  position: fixed;
+  top: 50vh;
+  transform: translateY(-50%) scale(1);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #6ee7b7;
+  opacity: 0.55;
+  transition:
+    opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    text-shadow 0.28s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+.nav-indicator-left {
+  left: 1.4vw;
+}
+
+.nav-indicator-right {
+  right: 1.4vw;
+}
+
+.nav-zone-left:hover .nav-indicator-left,
+.nav-zone-right:hover .nav-indicator-right {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.3);
+  text-shadow: 0 0 18px rgba(110, 231, 183, 1);
+}
+
+.top-progress-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 4px;
+  background: rgba(16, 185, 129, 0.16);
+  z-index: 940;
+  pointer-events: none;
+}
+
+.top-progress-bar {
+  height: 100%;
+  width: 10%;
+  background: linear-gradient(90deg, #047857, #34d399, #6ee7b7);
+  box-shadow: 0 0 14px rgba(52, 211, 153, 0.9);
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide-dots {
+  position: fixed;
+  left: 4vw;
+  bottom: 3.2vh;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.slide-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(167, 243, 208, 0.3);
+  transition: all 0.35s ease;
+}
+
+.slide-dot.active {
+  width: 30px;
+  border-radius: 6px;
+  background: #34d399;
+  box-shadow: 0 0 14px rgba(52, 211, 153, 0.85);
+}
+
+.ambient-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 55% 50%,
+    transparent 58%,
+    rgba(2, 11, 7, 0.5) 100%
+  );
+}
+
+/* ============================================================================
+   WUTHERING WAVES 3D ASSISTANT LAYER (`#assistant-webgl-container`)
+   - Normal Slide Mode: z-index: 35 (keeps Camellya 100% uniformly lit and never sliced by a dark box)
+   - Curtain Q&A Mode:  z-index: 920 (above `#interstitial-curtain-overlay` at z-index: 900)
+   ============================================================================ */
+#assistant-webgl-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 35;
+  pointer-events: none;
+  will-change: transform, opacity, filter;
+}
+
+#assistant-webgl-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.horizontal-glass-strip,
+.numbered-pill-item,
+.bento-card-item,
+.campaign-day-col,
+.conclusion-card-item {
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  background: rgba(4, 28, 18, 0.45);
+}
+
+/* ============================================================================
+   SECTION 3 & 4: INTERSTITIAL PROJECTION CURTAIN (SLIDES 2 -> 10)
+   - `#interstitial-curtain-overlay`: z-index: 900
+   - `.curtain-qa-stage`: z-index: 910, width: 62vw on left/center (Camellya stands on right)
+   - Background: linear-gradient(180deg, rgba(2, 16, 10, 0.96) 0%, rgba(6, 38, 25, 0.98) 100%)
+   - `backdrop-filter: blur(18px)` + `#34D399` emerald light bar at bottom edge
+   ============================================================================ */
+.interstitial-curtain-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 900;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  will-change: transform, opacity;
+  background: linear-gradient(
+    180deg,
+    rgba(2, 16, 10, 0.96) 0%,
+    rgba(6, 38, 25, 0.98) 100%
+  );
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 4px solid #34D399;
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.94),
+    0 0 46px rgba(52, 211, 153, 0.56),
+    inset 0 0 60px rgba(16, 185, 129, 0.22);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.curtain-top-roller {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 14px;
+  background: linear-gradient(
+    90deg,
+    #047857 0%,
+    #34d399 28%,
+    #facc15 50%,
+    #34d399 72%,
+    #047857 100%
+  );
+  box-shadow: 0 4px 20px rgba(52, 211, 153, 0.75);
+  z-index: 904;
+}
+
+.curtain-grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(52, 211, 153, 0.085) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(52, 211, 153, 0.085) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 901;
+}
+
+.curtain-ambient-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 38% 48%, rgba(52, 211, 153, 0.22) 0%, transparent 62%),
+    radial-gradient(circle at 80% 52%, rgba(250, 204, 21, 0.16) 0%, transparent 46%);
+  pointer-events: none;
+  z-index: 902;
+}
+
+.curtain-qa-stage {
+  position: relative;
+  z-index: 910;
+  width: 57.5vw;
+  margin-left: 11.2vw;
+  margin-right: auto;
+  padding: 3.6vh 3.0vw;
+  border-radius: 26px;
+  background: linear-gradient(
+    145deg,
+    rgba(6, 46, 30, 0.88) 0%,
+    rgba(3, 28, 18, 0.94) 100%
+  );
+  border: 2px solid #34D399;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.84),
+    0 0 36px rgba(52, 211, 153, 0.38),
+    inset 0 0 28px rgba(250, 204, 21, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 2.4vh;
+  transform-style: preserve-3d;
+}
+
+.curtain-slide-badge {
+  align-self: flex-start;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(1.05rem, 1.28vw, 1.4rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #020b07;
+  background: linear-gradient(90deg, #34d399 0%, #fde047 100%);
+  padding: 6px 18px;
+  border-radius: 999px;
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.7);
+  will-change: clip-path, transform, opacity, filter;
+}
+
+.curtain-comment-line {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.9rem, 2.7vw, 3.0rem);
+  font-weight: 700;
+  line-height: 1.22;
+  color: #a7f3d0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.26em;
+  text-shadow: 0 6px 24px rgba(0, 0, 0, 0.85);
+  will-change: clip-path, transform, opacity, filter;
+}
+
+.curtain-question-line {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2.15rem, 3.35vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.18;
+  color: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.26em;
+  padding-top: 1.6vh;
+  border-top: 1.5px dashed rgba(52, 211, 153, 0.45);
+  text-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.9),
+    0 0 24px rgba(52, 211, 153, 0.38);
+  will-change: clip-path, transform, opacity, filter;
+}
+
+.curtain-question-line .word-pop:first-child,
+.curtain-comment-line .word-pop:first-child {
+  color: #fde047;
+  text-shadow: 0 0 18px rgba(250, 204, 21, 0.65);
+}
+
+.curtain-hint-pill {
+  margin-top: 1vh;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(2, 11, 7, 0.82);
+  border: 1px solid rgba(52, 211, 153, 0.5);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(1.0rem, 1.2vw, 1.3rem);
+  font-weight: 700;
+  color: #6ee7b7;
+  will-change: clip-path, transform, opacity, filter;
+}
+
+.curtain-hint-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fde047;
+  box-shadow: 0 0 12px #fde047;
+  animation: pulseLeaf 1.4s ease-in-out infinite;
+}
+
+.curtain-bottom-pullbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 18px;
+  background: linear-gradient(
+    90deg,
+    #064e3b 0%,
+    #34d399 35%,
+    #fde047 50%,
+    #34d399 65%,
+    #064e3b 100%
+  );
+  border-top: 2px solid #a7f3d0;
+  box-shadow: 0 -4px 28px rgba(52, 211, 153, 0.95);
+  z-index: 906;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.curtain-pull-handle-ring {
+  width: 56px;
+  height: 22px;
+  border-radius: 999px;
+  border: 4px solid #fde047;
+  background: rgba(3, 28, 18, 0.95);
+  box-shadow: 0 0 18px #facc15;
+  transform: translateY(-6px);
+}
+
+/* ============================================================================
+   UPDATE V37 SECTION 5: NAHIDA BOTANICAL DENDRO SANCTUARY DECORATION
+   - Left Botanical Border (`left: 0`, `width: 11vw` max)
+   - Top-Right Corner Arch & Bottom-Right Low Foliage (`max-height: 14vh`, `opacity: 0.72`)
+   - Soft Translucent Glow (`opacity: 0.65 -> 0.85`, `drop-shadow(0 0 12px rgba(74, 222, 128, 0.28))`)
+   - Gentle Wind Sway (`±2.5deg`, `4.5s` period) synchronized with Nahida's Dendro Swing
+   ============================================================================ */
+.nahida-botanical-sanctuary {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 903;
+  overflow: hidden;
+  filter: drop-shadow(0 0 12px rgba(74, 222, 128, 0.28));
+}
+
+.botanical-svg-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.botanical-left-border {
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 11vw;
+  max-width: 11vw;
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.botanical-topright-arch {
+  position: absolute;
+  top: 18px;
+  right: 0;
+  width: 22vw;
+  height: 18vh;
+  max-height: 19vh;
+  opacity: 0.78;
+  pointer-events: none;
+}
+
+.botanical-bottomright-foliage {
+  position: absolute;
+  bottom: 18px;
+  right: 0;
+  width: 32vw;
+  height: 14vh;
+  max-height: 14vh;
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.botanical-sway-branch {
+  transform-origin: 0px 500px;
+  animation: nahidaGentleWindSway 4.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.botanical-clover-blossom {
+  animation: nahidaCloverBlossomSway 4.5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.botanical-spirit-motes-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dendro-spirit-mote {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.75;
+  box-shadow:
+    0 0 10px rgba(134, 239, 172, 0.9),
+    0 0 18px rgba(217, 249, 157, 0.65);
+  animation: nahidaSpiritMoteFloat 4.5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes nahidaGentleWindSway {
+  0%,
+  100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+
+@keyframes nahidaCloverBlossomSway {
+  0%,
+  100% {
+    transform: rotate(-2.5deg) scale(0.97);
+    opacity: 0.72;
+  }
+  50% {
+    transform: rotate(2.5deg) scale(1.04);
+    opacity: 0.85;
+  }
+}
+
+@keyframes nahidaSpiritMoteFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.88);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translate3d(5px, -12px, 0) scale(1.16);
+    opacity: 0.85;
+  }
+}
+
+/* ============================================================================
+   SECTION 3: FRAMELESS FLOATING CUTOUT ICONS LAYER (SLIDES 2 -> 9)
+   - Zero Frame, Zero Border, Zero Box, Zero Background (`background: transparent !important`)
+   - Natural object contour drop-shadow (`filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 14px rgba(74, 222, 128, 0.18))`)
+   - Multi-frequency Zero-Gravity Organic Float (`±12px` Y, `±6px` X, `±5deg` rot)
+   ============================================================================ */
+.floating-frameless-icons-layer {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform-style: preserve-3d;
+  z-index: 24;
+}
+
+.frameless-floating-icon-unit {
+  position: absolute !important;
+  height: auto !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.frameless-floating-oscillator {
+  width: 100% !important;
+  height: auto !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  animation: framelessZeroGravityFloat var(--float-dur, 5.2s) ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+  will-change: transform;
+}
+
+.frameless-cutout-img {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  opacity: 0;
+  transition: opacity 0.32s ease-out;
+  filter:
+    drop-shadow(0 16px 28px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 14px rgba(74, 222, 128, 0.18));
+}
+
+.frameless-cutout-img.is-cutout-ready {
+  opacity: 1;
+}
+
+@keyframes framelessZeroGravityFloat {
+  0%,
+  100% {
+    transform: translate3d(-5px, -11px, 0) rotate(calc(var(--base-rot, 0deg) - 4.5deg));
+  }
+  25% {
+    transform: translate3d(6px, -4px, 8px) rotate(calc(var(--base-rot, 0deg) + 2.2deg));
+  }
+  50% {
+    transform: translate3d(5px, 12px, 0) rotate(calc(var(--base-rot, 0deg) + 4.8deg));
+  }
+  75% {
+    transform: translate3d(-6px, 4px, -6px) rotate(calc(var(--base-rot, 0deg) - 2.0deg));
+  }
+}
